@@ -26,3 +26,13 @@
 *.exe
 *.out
 *.app
+*.prefs
+*.zip
+*.log
+*.xml
+*.properties
+TARGET_NUCLEO_L053R8
+/CarParkProjT
+.hg
+*.hgignore
+mbed
