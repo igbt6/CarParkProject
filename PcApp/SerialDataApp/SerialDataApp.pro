@@ -16,11 +16,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     configdialog.cpp \
-    us015model.cpp
+    us015model.cpp \
+    qcustomplot.cpp \
+    datachartview.cpp \
 
 HEADERS  += mainwindow.h \
     configdialog.h \
-    us015model.h
+    us015model.h \
+    qcustomplot.h \
+    datachartview.h
 
 FORMS    += mainwindow.ui \
     configdialog.ui

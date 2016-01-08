@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -38,6 +39,8 @@ public:
     QAction *actionClear;
     QWidget *centralWidget;
     QTableWidget *dataTableWidget;
+    QWidget *gridLayoutWidget;
+    QGridLayout *chartViewLayout;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuHelp;
@@ -49,7 +52,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(436, 388);
+        MainWindow->resize(755, 431);
         actionOpen = new QAction(MainWindow);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
         actionSave = new QAction(MainWindow);
@@ -85,13 +88,22 @@ public:
         actionClear->setIcon(icon4);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        centralWidget->setEnabled(true);
         dataTableWidget = new QTableWidget(centralWidget);
         dataTableWidget->setObjectName(QStringLiteral("dataTableWidget"));
-        dataTableWidget->setGeometry(QRect(10, 0, 301, 301));
+        dataTableWidget->setGeometry(QRect(10, 0, 261, 351));
+        gridLayoutWidget = new QWidget(centralWidget);
+        gridLayoutWidget->setObjectName(QStringLiteral("gridLayoutWidget"));
+        gridLayoutWidget->setGeometry(QRect(280, 10, 461, 331));
+        chartViewLayout = new QGridLayout(gridLayoutWidget);
+        chartViewLayout->setSpacing(6);
+        chartViewLayout->setContentsMargins(11, 11, 11, 11);
+        chartViewLayout->setObjectName(QStringLiteral("chartViewLayout"));
+        chartViewLayout->setContentsMargins(0, 0, 0, 0);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 436, 20));
+        menuBar->setGeometry(QRect(0, 0, 755, 20));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuHelp = new QMenu(menuBar);
@@ -102,7 +114,6 @@ public:
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
-        MainWindow->insertToolBarBreak(mainToolBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);

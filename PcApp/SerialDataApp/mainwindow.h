@@ -5,6 +5,7 @@
 #include <QtSerialPort/QSerialPort>
 #include "configdialog.h"
 #include "us015model.h"
+#include "datachartview.h"
 
 QT_USE_NAMESPACE
 QT_BEGIN_NAMESPACE
@@ -39,6 +40,7 @@ private:
     Ui::MainWindow *ui;
 
     QSerialPort *serial;
+    DataChartView *chartView;
     ConfigDialog * serialConfig;
     US015Model *us015Sensor;
 };

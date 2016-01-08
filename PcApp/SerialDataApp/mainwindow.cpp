@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     serial = new QSerialPort(this);
     serialConfig= new ConfigDialog();
     us015Sensor = new US015Model();
+    chartView= new DataChartView();
 
     ui->actionConnect->setEnabled(true);
     ui->actionDisconnect->setEnabled(false);
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     initActionsConnections();
     initDataTableWidget();
+    ui->chartViewLayout->addWidget(chartView->getGraphPlot());
 }
 
 MainWindow::~MainWindow()
@@ -88,6 +90,7 @@ void MainWindow::readData()
     ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(val.at(0)));
     ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(val.at(1)));
     ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(val.at(2)));
+    chartView->updateRealTimeData(val.at(1).toInt());
 }
 
 void MainWindow::handleError(QSerialPort::SerialPortError error)
