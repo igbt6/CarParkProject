@@ -19,12 +19,14 @@ SOURCES += main.cpp\
     us015model.cpp \
     qcustomplot.cpp \
     datachartview.cpp \
+    crc16.cpp
 
 HEADERS  += mainwindow.h \
     configdialog.h \
     us015model.h \
     qcustomplot.h \
-    datachartview.h
+    datachartview.h \
+    crc16.h
 
 FORMS    += mainwindow.ui \
     configdialog.ui

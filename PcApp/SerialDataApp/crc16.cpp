@@ -1,15 +1,20 @@
 #include "crc16.h"
 
-
-uint16_t CRC16::computeCRC16(uint8_t const *data_p, uint8_t len)
+CRC16::CRC16()
 {
-    uint8_t i;
-    uint16_t data;
-    uint16_t crc = CRC16_INITIAL_VALUE;
+
+}
+
+ushort CRC16::computeCRC16(const QByteArray &byteArr)
+{
+    unsigned char i;
+    ushort data;
+    ushort crc = CRC16_INITIAL_VALUE;
+    int len =byteArr.size();
 
     do
     {
-        for (i = 0, data = (unsigned int)0xff & *data_p++;
+        for (i = 0, data = (unsigned int)0xff & byteArr.at(i);
                 i < 8;
                 i++, data >>= 1
             )
