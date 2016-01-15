@@ -6,6 +6,7 @@ INPUT(
 ./release\qcustomplot.o
 ./release\datachartview.o
 ./release\crc16.o
+./release\circularbuffer.o
 ./release\qrc_resources.o
 ./release\moc_mainwindow.o
 ./release\moc_configdialog.o

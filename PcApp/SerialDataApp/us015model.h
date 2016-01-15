@@ -7,7 +7,7 @@ class US015Model
 {
 public:
     US015Model();
-
+    static const int dataFrameLength= 9;
 
     bool checkCorrectFrame(const QByteArray& data);
     QList<QString> parseFrame(const QByteArray& data);
