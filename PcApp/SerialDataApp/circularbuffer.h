@@ -15,16 +15,16 @@ public:
     virtual ~CircularBuffer();
 
 
-    void put(const T& in);
-    void put (const QVector<T>& in);
+    bool put(const T& in);
+    bool put (const QVector<T>& in);
 
-    void get(T& out);
+    bool get(T& out);
     T get();
-    void get(QVector<T>&out, const int N=-1 );
+    void get(QVector<T>&out, const int sizeOfVec= -1 );
 
-    void peek(T& out) const;
+    bool peek(T& out) const;
     T peek() const;
-    void peek(QVector<T>&out, const int N=-1 ) const;
+    void peek(QVector<T>&out, const int sizeOfVec=-1 ) const;
     void peek(const int idx, QVector<T>&out ) const;
 
     void clear();
@@ -32,7 +32,15 @@ public:
     void operator=(const CircularBuffer<T> & circBuffer);
 
     inline int getSize() const {
-        return nrOfData;
+        return size;
+    }
+
+    inline bool isFull() const {
+        return size==nrOfData;
+    }
+
+    inline bool isEmpty() const {
+        return nrOfData==0;
     }
 
 private:
@@ -45,57 +53,6 @@ private:
 };
 
 
-
-//implementation
-
-template<typename T> CircularBuffer<T>::CircularBuffer(int size){
-    this-> head=0;
-    this->tail=0;
-    this->size=size;
-    this->nrOfData=0;
-    data= new T[size];
-
-}
-
-
-template<typename T> CircularBuffer<T>::CircularBuffer(const CircularBuffer<T>& circBuffer){
-    if(circBuffer!= NULL){
-        this->head=circBuffer.head;
-        this->tail=circBuffer.tail;
-        this->size=circBuffer.size;
-        this->nrOfData=circBuffer.nrOfData;
-        delete [] data;
-        data= new T[size];
-
-        for (int i = 0; i < circBuffer.nrOfData; i++){
-            data[i] = circBuffer.data[i];
-        }
-    }
-}
-
-template <typename T> CircularBuffer<T>::~CircularBuffer(){
-    clear();
-}
-
-template<typename T> void CircularBuffer<T>::clear(){
-    delete[] data;
-    this->head=0;
-    this->tail=0;
-    this->size=0;
-    this->nrOfData=0;
-}
-
-
-template<typename T> void CircularBuffer<T>::put(const T& in){
-
-    data[tail++]=in;
-    ++nrOfData;
-    //if(tail>)
-
-}
-template<typename T> void put (const QVector<T>& in){
-
-}
-
+#include "circularbuffer.inl"
 
 #endif // CIRCULARBUFFER_H

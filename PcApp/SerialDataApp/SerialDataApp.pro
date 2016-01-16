@@ -20,7 +20,7 @@ SOURCES += main.cpp\
     qcustomplot.cpp \
     datachartview.cpp \
     crc16.cpp \
-    circularbuffer.cpp
+    circularbuffer.inl
 
 HEADERS  += mainwindow.h \
     configdialog.h \

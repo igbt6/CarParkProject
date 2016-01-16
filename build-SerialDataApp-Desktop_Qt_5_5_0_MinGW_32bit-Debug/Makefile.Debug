@@ -4157,7 +4157,8 @@ debug/circularbuffer.o: ../PcApp/SerialDataApp/circularbuffer.cpp ../PcApp/Seria
 		C:/Qt/5.5/mingw492_32/include/QtCore/qstringlist.h \
 		C:/Qt/5.5/mingw492_32/include/QtCore/qregexp.h \
 		C:/Qt/5.5/mingw492_32/include/QtCore/qstringmatcher.h \
-		C:/Qt/5.5/mingw492_32/include/QtCore/qpoint.h
+		C:/Qt/5.5/mingw492_32/include/QtCore/qpoint.h \
+		../PcApp/SerialDataApp/circularbuffer.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\circularbuffer.o ..\PcApp\SerialDataApp\circularbuffer.cpp
 
 debug/qrc_resources.o: debug/qrc_resources.cpp 
