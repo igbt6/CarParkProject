@@ -19,16 +19,18 @@ SOURCES += main.cpp\
     us015model.cpp \
     qcustomplot.cpp \
     datachartview.cpp \
-    crc16.cpp \
-    circularbuffer.inl
+    circularbuffer.inl \
+    frame.cpp \
+    crc.cpp
 
 HEADERS  += mainwindow.h \
     configdialog.h \
     us015model.h \
     qcustomplot.h \
     datachartview.h \
-    crc16.h \
-    circularbuffer.h
+    circularbuffer.h \
+    frame.h \
+    crc.h
 
 FORMS    += mainwindow.ui \
     configdialog.ui

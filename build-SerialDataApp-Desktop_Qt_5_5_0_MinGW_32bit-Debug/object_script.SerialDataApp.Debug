@@ -5,8 +5,8 @@ INPUT(
 ./debug\us015model.o
 ./debug\qcustomplot.o
 ./debug\datachartview.o
-./debug\crc16.o
-./debug\circularbuffer.o
+./debug\frame.o
+./debug\crc.o
 ./debug\qrc_resources.o
 ./debug\moc_mainwindow.o
 ./debug\moc_configdialog.o

@@ -1,11 +1,21 @@
-#include "crc16.h"
+#include "crc.h"
 
-CRC16::CRC16()
+CRC::CRC()
 {
 
 }
 
-ushort CRC16::computeCRC16(const QByteArray &byteArr)
+
+uchar CRC::computeCRC8(const QByteArray &data)
+{
+
+ return 0; //TODO
+
+}
+
+
+
+ushort CRC::computeCRC16(const QByteArray &byteArr)
 {
     unsigned char i;
     ushort data;
@@ -31,4 +41,9 @@ ushort CRC16::computeCRC16(const QByteArray &byteArr)
     crc = (crc << 8) | (data >> 8 & 0xff);
 
     return (crc);
+}
+
+uint CRC::computeCRC32(const QByteArray &data)
+{
+    return 0;   //TODO
 }
