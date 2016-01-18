@@ -26,5 +26,21 @@ QList<QString> US015Model::parseFrame(const QByteArray& data){
         frameVal.append(QString::fromStdString("---"));
     }
     return  frameVal;
+}
 
+
+
+char  US015Model:: getStartCharacter(void) const
+{
+    return startChar;
+}
+
+int  US015Model::getNrOfDataBytesInFrame(void) const
+{
+    return nrOfBytesFrame;
+}
+
+int  US015Model:: getLengthOfRawDataInFrame(void) const
+{
+  return 1+1+nrOfBytesFrame+crcType;    //startChar+lengthByte+rawDataBytes+CRC bytes
 }

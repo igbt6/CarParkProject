@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     serial = new QSerialPort(this);
+    serialBuffer =new CircularBuffer<uchar>(0xFF);  //255 bytes
     serialConfig= new ConfigDialog();
     us015Sensor = new US015Model();
     chartView= new DataChartView();
@@ -28,6 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
     initActionsConnections();
     initDataTableWidget();
     ui->chartViewLayout->addWidget(chartView->getGraphPlot());
+
+
+    //PERFORM YOUR QUICK TESTS HERE AKA UNIT TESTS ;-)
+    //CircularBuffer<char>::testMethod();
 }
 
 MainWindow::~MainWindow()
@@ -73,7 +78,7 @@ void MainWindow::closeSerialPort()
 void MainWindow::about()
 {
     QMessageBox::about(this, tr("About PcTestApp"),
-                       tr("The <b>PcTestApp</b> Some stuff need to be always visualized "));
+                       tr("The <b>PcTestApp</b> Some stuff needs to be always visualized "));
 }
 
 void MainWindow::writeData(const QByteArray &data)
@@ -85,7 +90,31 @@ void MainWindow::writeData(const QByteArray &data)
 void MainWindow::readData()
 {
     QByteArray data = serial->readAll();
+    serial->clear();
     QList<QString> val= us015Sensor->parseFrame(data);
+
+    foreach(uchar byte, data)
+    {
+        serialBuffer->put(byte);
+    }
+    int startChrIdx= serialBuffer->searchForGivenValue(us015Sensor->getStartCharacter());
+    if(startChrIdx!=-1)
+    {
+        qDebug()<<"'x' has been found= "<<QString::number(startChrIdx);
+          QByteArray rawData;
+          serialBuffer->makeDataInvalid(startChrIdx);
+          if(serialBuffer->get(rawData,us015Sensor->getLengthOfRawDataInFrame()) )
+          {
+            foreach(char byte,rawData)
+            {
+                 qDebug()<<"FROM BUF: "<<QString::number(byte);
+                 //qDebug()<<"NR OF DATA "<<QString::number(serialBuffer->getNrOfData());
+
+            }
+            val= us015Sensor->parseFrame(rawData);
+          }
+    }
+
     //console->putData(data); //TODO
     ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(val.at(0)));
     ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(val.at(1)));

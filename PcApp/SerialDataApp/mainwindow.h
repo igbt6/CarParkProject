@@ -6,6 +6,7 @@
 #include "configdialog.h"
 #include "us015model.h"
 #include "datachartview.h"
+#include "circularbuffer.h"
 
 QT_USE_NAMESPACE
 QT_BEGIN_NAMESPACE
@@ -40,6 +41,7 @@ private:
     Ui::MainWindow *ui;
 
     QSerialPort *serial;
+    CircularBuffer<uchar> * serialBuffer;
     DataChartView *chartView;
     ConfigDialog * serialConfig;
     US015Model *us015Sensor;

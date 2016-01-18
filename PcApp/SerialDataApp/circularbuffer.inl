@@ -6,7 +6,7 @@ template<typename T> CircularBuffer<T>::CircularBuffer(int size)
     this->tail=0;
     this->size=size;
     this->nrOfData=0;
-    data= new T[size];
+    this->data= new T[size];
 
 }
 
@@ -47,8 +47,9 @@ template<typename T> bool CircularBuffer<T>::put(const T& in)
 
     if(!isFull()){
         data[tail++]=in;
-        tail%=size;
         ++nrOfData;
+        //qDebug()<<"PUT "<<QString::number(data[tail-1])<<" NR OF DATA "<<QString::number(nrOfData)<<"TAIL= "<<QString::number( tail%size) ;
+        tail%=size;
         return true;
     }
     else
@@ -87,17 +88,40 @@ template<typename T>T CircularBuffer<T>::get()
     return out;
 }
 
-template<typename T>void CircularBuffer<T>::get(QVector<T>&out, const int sizeOfVec )
+template<typename T>bool CircularBuffer<T>::get(QVector<T>&out, const int sizeOfVec )
 {
     int mSize;
     if(sizeOfVec==-1)
         mSize=nrOfData;
     else
-        mSize=(sizeOfVec+1)%nrOfData;
+        mSize=(sizeOfVec);
     out.resize(mSize);
     for(int i=0;i<mSize; i++){
-        get(out[i]);
+        if(!get(out[i]))
+            return false;
     }
+    return true;
+}
+
+
+template<typename T>bool CircularBuffer<T>::get(QByteArray &out, const int sizeOfArr )
+{
+    int mSize;
+    if(sizeOfArr==-1)
+        mSize=nrOfData;
+    else
+        mSize=(sizeOfArr);
+    out.resize(mSize/2);
+    uchar byte;
+    for(int i=0;i<mSize; i++)
+    {
+        if(!get(byte))
+        {
+            return false;
+        }
+        out.insert(i,byte);
+    }
+    return true;
 }
 
 template<typename T> bool CircularBuffer<T>::peek(T& out) const
@@ -128,6 +152,7 @@ template<typename T> void CircularBuffer<T>::peek(QVector<T>&out, const int size
     }
 
 }
+
 template<typename T> void CircularBuffer<T>::peek(const int idx, QVector<T>&out ) const
 {
    int mSize = nrOfData-idx;
@@ -137,4 +162,23 @@ template<typename T> void CircularBuffer<T>::peek(const int idx, QVector<T>&out 
    }
 
 }
+
+
+template<typename T> bool CircularBuffer<T>:: makeDataInvalid(int nrOfData){
+    if(nrOfData>this->nrOfData)
+        return false;
+    this->head+=nrOfData;
+    this->head%=this->size;
+    return true;
+}
+
+template<typename T> int CircularBuffer<T>:: searchForGivenValue(const T& val){
+
+    for(int i =0; i<nrOfData; i++ ){
+        if(data[(head+i)%(this->size)]==val)
+            return i;
+    }
+    return -1;
+}
+
 
