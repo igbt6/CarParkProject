@@ -111,15 +111,14 @@ template<typename T>bool CircularBuffer<T>::get(QByteArray &out, const int sizeO
         mSize=nrOfData;
     else
         mSize=(sizeOfArr);
-    out.resize(mSize/2);
-    uchar byte;
+    T byte;
     for(int i=0;i<mSize; i++)
     {
         if(!get(byte))
         {
             return false;
         }
-        out.insert(i,byte);
+        out.append(byte);
     }
     return true;
 }

@@ -8,13 +8,13 @@
 Serial debugPort(SERIAL_TX, SERIAL_RX); //Default 9600 bauds, 8-bit data, no parity
  
 void measurementFinished(int resultVal){
-   
    uint16_t crc=CRC16::computeCRC16((uint8_t const *)resultVal, 4);
+   
    uint8_t buf[9];
    buf[0]='x';
    buf[1]=sizeof(resultVal);
-   memcpy(&buf[2],(uint8_t *)resultVal,sizeof(resultVal));
-   memcpy(&buf[2+sizeof(resultVal)],(uint8_t *)crc,sizeof(crc));
+   memcpy(&buf[2],(uint8_t *)&resultVal,sizeof(resultVal));
+   memcpy(&buf[2+sizeof(resultVal)],(uint8_t *)&crc,sizeof(crc));
    buf[8]='\0'; //to get a correct printf formatting
    debugPort.printf("%s",buf);
 }

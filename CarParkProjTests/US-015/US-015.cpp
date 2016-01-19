@@ -76,7 +76,7 @@ void US015::stopMeasureCallback(void)
     resetMeasuremnt();
     if(measuremntFinishedCallback!=NULL) 
     {
-        (*measuremntFinishedCallback)(convertTimeToDistanceValue_mm(timerCtrl->difTime)); //for default
+        (*measuremntFinishedCallback)(convertTimeToDistanceValue_mm(/*timerCtrl->difTime*/(int)0xF1234567)); //for default
     }
 }
 

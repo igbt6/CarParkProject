@@ -1,5 +1,7 @@
 #include "frame.h"
 
+
+#include <QDebug>
 Frame::Frame(char startChar ,int nrOfBytes ,CRC::CrcType crcType )
 {
     this->startChar= startChar;
@@ -36,7 +38,13 @@ bool Frame:: isFrameCorrect(const QByteArray& frame){
     QByteArray data;
     for(int i=0;i<nrOfBytes; i++)
     {
-        data.insert(i,frame[i+2]);
+        data.append(frame[i+2]);
+    }
+    foreach(uchar byte,data)
+    {
+         //qDebug()<<"FROM BUF: "<<QString::number(byte);
+         qDebug()<<"rawData "<<QString::number(byte);
+
     }
 
     uint crcResult = false;
@@ -55,8 +63,9 @@ bool Frame:: isFrameCorrect(const QByteArray& frame){
         break;
 
     }
-
-    if(crcResult==static_cast<uint>((frame.at(nrOfBytes+2)<<8)|(frame.at(nrOfBytes+3))))
+    qDebug()<<" CRC RES:"<<crcResult<<" "<<static_cast<uint>((frame.at(nrOfBytes+3)<<8)|(frame.at(nrOfBytes+2)));
+        qDebug()<<"----------------------";
+    if(crcResult==static_cast<uint>((frame.at(nrOfBytes+3)<<8)|(frame.at(nrOfBytes+2))))
     {
         this->rawData->resize(nrOfBytes);
         for(int i=0;i<nrOfBytes; i++)

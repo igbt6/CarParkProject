@@ -91,8 +91,7 @@ void MainWindow::readData()
 {
     QByteArray data = serial->readAll();
     serial->clear();
-    QList<QString> val= us015Sensor->parseFrame(data);
-
+    QList<QString> val;//= us015Sensor->parseFrame(data);
     foreach(uchar byte, data)
     {
         serialBuffer->put(byte);
@@ -102,24 +101,27 @@ void MainWindow::readData()
     {
         qDebug()<<"'x' has been found= "<<QString::number(startChrIdx);
           QByteArray rawData;
+
           serialBuffer->makeDataInvalid(startChrIdx);
           if(serialBuffer->get(rawData,us015Sensor->getLengthOfRawDataInFrame()) )
           {
             foreach(char byte,rawData)
             {
-                 qDebug()<<"FROM BUF: "<<QString::number(byte);
+                 //qDebug()<<"FROM BUF: "<<QString::number(byte);
+
                  //qDebug()<<"NR OF DATA "<<QString::number(serialBuffer->getNrOfData());
 
             }
+
             val= us015Sensor->parseFrame(rawData);
           }
     }
 
     //console->putData(data); //TODO
-    ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(val.at(0)));
-    ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(val.at(1)));
-    ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(val.at(2)));
-    chartView->updateRealTimeData(val.at(1).toInt());
+   // ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(val.at(0)));
+   // ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(val.at(1)));
+   // ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(val.at(2)));
+   // chartView->updateRealTimeData(val.at(1).toInt());
 }
 
 void MainWindow::handleError(QSerialPort::SerialPortError error)
