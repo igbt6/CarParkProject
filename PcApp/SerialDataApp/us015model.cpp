@@ -2,36 +2,47 @@
 
 US015Model::US015Model():frame(startChar,nrOfBytesFrame,crcType)
 {
-
+        this->value=-1;
 }
 
-QList<QString> US015Model::parseFrame(const QByteArray& data){
+bool US015Model::parseFrame(const QByteArray& data){
 
-    QList<QString> frameVal;
     if(frame.isFrameCorrect(data))
     {
-
+        /*
         qDebug()<<"NEW_FRAME ARRIVED:";
         foreach(char byte, data ){
             qDebug()<<"0x"<<QString::number(byte, 16);
         }
-        frameVal.append(QString(QDate::currentDate().toString()));
-        frameVal.append(QString::fromStdString(data.toStdString()));
-        frameVal.append(QString::fromStdString("[mm]"));
+        */
+        return true;
     }
-    else
-    {
-        frameVal.append(QString::fromStdString("---"));
-        frameVal.append(QString::fromStdString("---"));
-        frameVal.append(QString::fromStdString("---"));
-    }
-    return  frameVal;
+    return false;
 }
 
+
+int US015Model:: getDistanceValue(void)
+{
+    QByteArray* rawDataPtr= frame.getRawData();
+    this->value =0;
+    for(int i=0; i<getNrOfDataBytesInFrame();i++)
+    {
+        try{
+            //qDebug()<<"RAW DATA PTR: "<<QString::number(rawDataPtr->at(i), 16);
+            this->value|= ((rawDataPtr->at(i)&0xFF)<<(i*8));
+        }
+        catch(const std::exception& e){
+            break;
+        }
+    }
+    return this->value;
+
+}
 
 
 char  US015Model:: getStartCharacter(void) const
 {
+
     return startChar;
 }
 

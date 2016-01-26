@@ -1,5 +1,4 @@
 #include "crc.h"
-
 CRC::CRC()
 {
 
@@ -17,14 +16,17 @@ uchar CRC::computeCRC8(const QByteArray &data)
 
 ushort CRC::computeCRC16(const QByteArray &byteArr)
 {
-    unsigned char i;
+    uchar i;
     ushort data;
     ushort crc = CRC16_INITIAL_VALUE;
     int len =byteArr.size();
+    int count= 0;
+    if(len==0)
+        return (~crc);
 
     do
     {
-        for (i = 0, data = (unsigned int)0xff & byteArr.at(i);
+        for (i = 0, data = (unsigned int)0xff & byteArr.at(count);
                 i < 8;
                 i++, data >>= 1
             )
@@ -34,6 +36,7 @@ ushort CRC::computeCRC16(const QByteArray &byteArr)
             else
                 crc >>= 1;
         }
+        count++;
     } while (--len);
 
     crc = ~crc;

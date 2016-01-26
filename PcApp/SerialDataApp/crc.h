@@ -3,7 +3,7 @@
 #include <QByteArray>
 
 
-#define CRC16_POLYNOMIAL        0x9EB2
+#define CRC16_POLYNOMIAL        0x8408
 #define CRC16_INITIAL_VALUE     0xFFFF
 
 class CRC

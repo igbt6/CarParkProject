@@ -99,29 +99,27 @@ void MainWindow::readData()
     int startChrIdx= serialBuffer->searchForGivenValue(us015Sensor->getStartCharacter());
     if(startChrIdx!=-1)
     {
-        qDebug()<<"'x' has been found= "<<QString::number(startChrIdx);
-          QByteArray rawData;
+      //qDebug()<<"'x' has been found= "<<QString::number(startChrIdx);
+      QByteArray rawData;
 
-          serialBuffer->makeDataInvalid(startChrIdx);
-          if(serialBuffer->get(rawData,us015Sensor->getLengthOfRawDataInFrame()) )
-          {
-            foreach(char byte,rawData)
-            {
-                 //qDebug()<<"FROM BUF: "<<QString::number(byte);
-
-                 //qDebug()<<"NR OF DATA "<<QString::number(serialBuffer->getNrOfData());
-
-            }
-
-            val= us015Sensor->parseFrame(rawData);
-          }
+      serialBuffer->makeDataInvalid(startChrIdx);
+      if(serialBuffer->get(rawData,us015Sensor->getLengthOfRawDataInFrame()) )
+      {
+        if(us015Sensor->parseFrame(rawData))
+        {
+           //qDebug()<<"VALUE: "<<QString("%1").arg((us015Sensor->getDistanceValue()) , 0, 16);
+           ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString(QDate::currentDate().toString())));
+           ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(us015Sensor->getDistanceValue()));
+           ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(QString::fromStdString("[mm]")));
+           chartView->updateRealTimeData(us015Sensor->getDistanceValue());
+        }
+        else{
+            ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString::fromStdString("---")));
+            ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(QString::fromStdString("---")));
+            ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(QString::fromStdString("---")));
+        }
+      }
     }
-
-    //console->putData(data); //TODO
-   // ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(val.at(0)));
-   // ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(val.at(1)));
-   // ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(val.at(2)));
-   // chartView->updateRealTimeData(val.at(1).toInt());
 }
 
 void MainWindow::handleError(QSerialPort::SerialPortError error)

@@ -38,15 +38,14 @@ bool Frame:: isFrameCorrect(const QByteArray& frame){
     QByteArray data;
     for(int i=0;i<nrOfBytes; i++)
     {
-        data.append(frame[2+nrOfBytes-i-1]);
+        data.append(frame[2+i]);
     }
+    /*
     foreach(uchar byte,data)
     {
-         //qDebug()<<"FROM BUF: "<<QString::number(byte);
          qDebug()<<"rawData "<<QString::number(byte);
-
     }
-
+    */
     uint crcResult = false;
     switch(crcType)
     {
@@ -63,15 +62,27 @@ bool Frame:: isFrameCorrect(const QByteArray& frame){
         break;
 
     }
-    qDebug()<<" CRC RES:"<<crcResult<<" "<<static_cast<uint>((frame.at(nrOfBytes+3)<<8)|(frame.at(nrOfBytes+2)));
-        qDebug()<<"----------------------";
-    if(crcResult==static_cast<uint>((frame.at(nrOfBytes+3)<<8)|(frame.at(nrOfBytes+2))))
+    int crc= (frame.at(nrOfBytes+3)<<8)&0xFF00;
+    crc|=frame.at(nrOfBytes+2)&0xFF;
+
+    qDebug()<<" CRC RES:"<<crcResult<<" "<<crc;//static_cast<ushort>(((frame.at(nrOfBytes+3)<<8)&0xFF00)|(frame.at(nrOfBytes+2)));
+    qDebug()<<(frame.at(nrOfBytes+3))<<"    ---------   "<<frame.at(nrOfBytes+2);
+    qDebug()<<"CRC_Result: "<<QString("%1").arg(((crcResult>>8)&0xFF) , 0, 16) <<" " <<QString("%1").arg((crcResult&0xFF) , 0, 16);
+    qDebug()<<QString("%1").arg(frame.at(nrOfBytes+3) , 0, 16);
+    qDebug()<<QString("%1").arg(frame.at(nrOfBytes+2) , 0, 16);
+    qDebug()<<QString("%1").arg(crc , 0, 16);
+    qDebug()<<"----------------------";
+
+    if(crcResult==static_cast<ushort>(crc))
     {
+
+        //qDebug()<<"NR OF BYTES::-- "<<this->rawData->size()<<"---------- "<<this->nrOfBytes;
         this->rawData->resize(nrOfBytes);
         for(int i=0;i<nrOfBytes; i++)
         {
             rawData->insert(i,frame[i+2]);
         }
+        //qDebug()<<"SIZE::--------------------- "<<this->rawData->size();
         return true;
     }
     else

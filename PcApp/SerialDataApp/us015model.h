@@ -9,7 +9,7 @@ class US015Model
 public:
     US015Model();
 
-    QList<QString> parseFrame(const QByteArray& data);
+    bool parseFrame(const QByteArray& data);
     void setFrameParameters(char startChar,int nrOfBytes, CRC::CrcType crcType);
 
 
@@ -17,6 +17,8 @@ public:
 
     int  getNrOfDataBytesInFrame(void) const;
     int getLengthOfRawDataInFrame(void) const;
+
+    int getDistanceValue(void);
 
 private:
     int value;      // [mm]
