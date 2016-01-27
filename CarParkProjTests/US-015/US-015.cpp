@@ -39,7 +39,7 @@ bool US015::isMeasurementRuning()
 
 int US015::convertTimeToDistanceValue_mm(int timeUs)
 {
-    return ((timeUs) * (float)((SPEED_OF_SOUND)/1000))/2;  //(0.343mm/us)
+    return (int)((timeUs) * (float)((SPEED_OF_SOUND)/1000))/2;  //(0.343mm/us)
 }
 
 int US015::convertTimeToDistanceValue_cm(int timeUs)
@@ -76,7 +76,7 @@ void US015::stopMeasureCallback(void)
     resetMeasuremnt();
     if(measuremntFinishedCallback!=NULL) 
     {
-        (*measuremntFinishedCallback)(convertTimeToDistanceValue_mm(/*timerCtrl->difTime*/(int)0xF1234567)); //for default
+        (*measuremntFinishedCallback)(convertTimeToDistanceValue_mm(timerCtrl->difTime)); //for default
     }
 }
 

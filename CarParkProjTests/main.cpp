@@ -8,7 +8,7 @@
 Serial debugPort(SERIAL_TX, SERIAL_RX); //Default 9600 bauds, 8-bit data, no parity
  
 void measurementFinished(int resultVal){
-   uint16_t crc=CRC16::computeCRC16((uint8_t const *)resultVal, 4);
+   uint16_t crc=CRC16::computeCRC16((uint8_t const *)&resultVal, 4);
    
    uint8_t buf[9];
    buf[0]='x';
