@@ -40,7 +40,7 @@ bool Frame:: isFrameCorrect(const QByteArray& frame){
     {
         data.append(frame[2+i]);
     }
-    /*
+/*
     foreach(uchar byte,data)
     {
          qDebug()<<"rawData "<<QString::number(byte);
@@ -64,7 +64,7 @@ bool Frame:: isFrameCorrect(const QByteArray& frame){
     }
     int crc= (frame.at(nrOfBytes+3)<<8)&0xFF00;
     crc|=frame.at(nrOfBytes+2)&0xFF;
-
+/*
     qDebug()<<" CRC RES:"<<crcResult<<" "<<crc;//static_cast<ushort>(((frame.at(nrOfBytes+3)<<8)&0xFF00)|(frame.at(nrOfBytes+2)));
     qDebug()<<(frame.at(nrOfBytes+3))<<"    ---------   "<<frame.at(nrOfBytes+2);
     qDebug()<<"CRC_Result: "<<QString("%1").arg(((crcResult>>8)&0xFF) , 0, 16) <<" " <<QString("%1").arg((crcResult&0xFF) , 0, 16);
@@ -72,7 +72,7 @@ bool Frame:: isFrameCorrect(const QByteArray& frame){
     qDebug()<<QString("%1").arg(frame.at(nrOfBytes+2) , 0, 16);
     qDebug()<<QString("%1").arg(crc , 0, 16);
     qDebug()<<"----------------------";
-
+*/
     if(crcResult==static_cast<ushort>(crc))
     {
 

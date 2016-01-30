@@ -107,7 +107,7 @@ void MainWindow::readData()
       {
         if(us015Sensor->parseFrame(rawData))
         {
-           //qDebug()<<"VALUE: "<<QString("%1").arg((us015Sensor->getDistanceValue()) , 0, 16);
+           qDebug()<<"VALUE: "<<QString("%1 [mm]").arg((us015Sensor->getDistanceValue()) , 0, 10);
            ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString(QDate::currentDate().toString())));
            ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(us015Sensor->getDistanceValue()));
            ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(QString::fromStdString("[mm]")));
@@ -117,6 +117,7 @@ void MainWindow::readData()
             ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString::fromStdString("---")));
             ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(QString::fromStdString("---")));
             ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(QString::fromStdString("---")));
+            qDebug()<<"INCORRECT VALUE";
         }
       }
     }
