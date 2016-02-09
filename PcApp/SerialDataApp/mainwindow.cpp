@@ -91,34 +91,46 @@ void MainWindow::readData()
 {
     QByteArray data = serial->readAll();
     serial->clear();
-    QList<QString> val;//= us015Sensor->parseFrame(data);
     foreach(uchar byte, data)
     {
         serialBuffer->put(byte);
     }
+
+
+    QVector<uchar> bufferData;
+    serialBuffer->peek(bufferData );
+    qDebug()<<"SIZE_OF_BUFFER: "<<QString::number(serialBuffer->getNrOfData());
+
+    foreach(uchar byte, bufferData)
+    {
+      qDebug()<<"VEC: "<<QString::number(byte)<<" VEC_SIZE: "<<QString::number(bufferData.size());
+    }
+
     int startChrIdx= serialBuffer->searchForGivenValue(us015Sensor->getStartCharacter());
     if(startChrIdx!=-1)
     {
-      //qDebug()<<"'x' has been found= "<<QString::number(startChrIdx);
+      qDebug()<<"'x' has been found= "<<QString::number(startChrIdx);
       QByteArray rawData;
 
-      serialBuffer->makeDataInvalid(startChrIdx);
-      if(serialBuffer->get(rawData,us015Sensor->getLengthOfRawDataInFrame()) )
+      if(serialBuffer->makeDataInvalid(startChrIdx))
       {
-        if(us015Sensor->parseFrame(rawData))
-        {
-           qDebug()<<"VALUE: "<<QString("%1 [mm]").arg((us015Sensor->getDistanceValue()) , 0, 10);
-           ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString(QDate::currentDate().toString())));
-           ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(us015Sensor->getDistanceValue()));
-           ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(QString::fromStdString("[mm]")));
-           chartView->updateRealTimeData(us015Sensor->getDistanceValue());
-        }
-        else{
-            ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString::fromStdString("---")));
-            ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(QString::fromStdString("---")));
-            ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(QString::fromStdString("---")));
-            qDebug()<<"INCORRECT VALUE";
-        }
+          if(serialBuffer->get(rawData,us015Sensor->getLengthOfRawDataInFrame()) )
+          {
+            if(us015Sensor->parseFrame(rawData))
+            {
+               qDebug()<<"-----VALUE: "<<QString("%1 [mm]\n").arg((us015Sensor->getDistanceValue()) , 0, 10);
+               ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString(QDate::currentDate().toString())));
+               ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(us015Sensor->getDistanceValue()));
+               ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(QString::fromStdString("[mm]")));
+               chartView->updateRealTimeData(us015Sensor->getDistanceValue());
+            }
+            else{
+                ui->dataTableWidget->setItem(0, 0, new QTableWidgetItem(QString::fromStdString("---")));
+                ui->dataTableWidget->setItem(0, 1, new QTableWidgetItem(QString::fromStdString("---")));
+                ui->dataTableWidget->setItem(0, 2, new QTableWidgetItem(QString::fromStdString("---")));
+                qDebug()<<"INCORRECT VALUE"<<"\n";
+            }
+          }
       }
     }
 }
