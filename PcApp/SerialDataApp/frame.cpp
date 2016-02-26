@@ -38,7 +38,7 @@ bool Frame:: isFrameCorrect(const QByteArray& frame){
     QByteArray data;
     for(int i=0;i<nrOfBytes; i++)
     {
-        data.append(frame[i+2]);
+        data.append(frame[2+nrOfBytes-i-1]);
     }
     foreach(uchar byte,data)
     {
